@@ -32,7 +32,7 @@ export function Dashboard({ launches }: DashboardProps) {
             <div className="rounded-lg bg-primary/10 p-2">
               <Rocket className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">Galactic Fleet Commander</h1>
+            <h1 className="md:text-xl sm:text-lg text-base font-bold tracking-tight">Galactic Fleet Commander</h1>
           </div>
           
           <div className="flex items-center gap-4">

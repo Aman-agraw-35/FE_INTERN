@@ -29,13 +29,9 @@ export function LogConsole({ logs }: LogConsoleProps) {
       <div className="flex items-center justify-between border-b border-border/10 bg-muted/20 p-4 backdrop-blur-sm">
         <div className="flex items-center gap-2 font-mono text-sm font-semibold tracking-wider text-muted-foreground">
           <Terminal className="h-4 w-4" />
-          <span>MISSION_LOG.SYS</span>
+          <span>Launch Activity Log</span>
         </div>
-        <div className="flex gap-1.5">
-          <div className="h-2 w-2 rounded-full bg-red-500/50" />
-          <div className="h-2 w-2 rounded-full bg-yellow-500/50" />
-          <div className="h-2 w-2 rounded-full bg-green-500/50" />
-        </div>
+
       </div>
       
       <ScrollArea className="flex-1 p-4">
@@ -66,7 +62,7 @@ export function LogConsole({ logs }: LogConsoleProps) {
             ))}
             {logs.length === 0 && (
               <div className="py-8 text-center text-muted-foreground opacity-50">
-                Awaiting telemetry code...
+                No telemetry data yet
               </div>
             )}
           </AnimatePresence>
