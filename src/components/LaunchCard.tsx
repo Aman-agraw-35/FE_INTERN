@@ -94,5 +94,9 @@ export function LaunchCard({ launch, status, progress, onInit, onAbort }: Launch
         )}
       </CardFooter>
     </Card>
+    
   )
 }
+
+
+
