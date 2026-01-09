@@ -1,17 +1,13 @@
 "use client"
 
-import { Calendar, Rocket, AlertCircle, Play, CheckCircle2 } from "lucide-react"
+import { Launch } from "@/lib/types"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
-interface Launch {
-  id: string
-  flight_number: number
-  name: string
-  rocket: string
-  date_utc: string
-}
-
-type LaunchStatus = "idle" | "checking" | "ready" | "aborted"
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
+import { Calendar, Rocket, AlertCircle, Play, CheckCircle2 } from "lucide-react"
+import { LaunchStatus } from "@/hooks/useLaunchManager"
+import { cn } from "@/lib/utils"
 
 interface LaunchCardProps {
   launch: Launch
@@ -26,22 +22,22 @@ export function LaunchCard({ launch, status, progress, onInit, onAbort }: Launch
   const isReady = status === "ready"
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-muted/40 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg dark:bg-card/20">
+    <Card className="group relative flex flex-col justify-between overflow-hidden border-muted/40 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg dark:bg-card/20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       
-      <div className="p-6 pb-2">
+      <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
-          <span className={`mb-2 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${isReady ? "border-transparent bg-primary text-primary-foreground hover:bg-primary/80" : "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}>
+          <Badge variant={isReady ? "default" : "secondary"} className="mb-2">
             {isReady ? "READY FOR LAUNCH" : status === "checking" ? "SYSTEM CHECK" : "STANDBY"}
-          </span>
+          </Badge>
           <div className="text-xs text-muted-foreground font-mono">#{launch.flight_number}</div>
         </div>
-        <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-foreground">
+        <CardTitle className="line-clamp-1 text-lg font-bold tracking-tight text-foreground">
           {launch.name}
-        </h3>
-      </div>
+        </CardTitle>
+      </CardHeader>
 
-      <div className="flex-1 space-y-4 p-6 pt-0">
+      <CardContent className="flex-1 space-y-4">
         <div className="space-y-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Rocket className="h-4 w-4 text-primary" />
@@ -59,17 +55,19 @@ export function LaunchCard({ launch, status, progress, onInit, onAbort }: Launch
               <span>System Check</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
-              <div
-                className={`h-full flex-1 transition-all duration-300 ${progress > 85 ? "bg-green-500" : "bg-yellow-500"}`}
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+            <Progress
+              value={progress}
+              className={cn(
+                "h-2 transition-all",
+                "[&>div]:transition-colors [&>div]:duration-300",
+                progress > 85 ? "[&>div]:bg-green-500" : "[&>div]:bg-yellow-500"
+              )}
+            />
           </div>
         )}
-      </div>
+      </CardContent>
 
-      <div className="flex items-center p-6 pt-0">
+      <CardFooter className="pt-4">
         {isChecking ? (
           <Button 
             variant="destructive" 
@@ -94,7 +92,7 @@ export function LaunchCard({ launch, status, progress, onInit, onAbort }: Launch
             Initialize Systems
           </Button>
         )}
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   )
 }
